@@ -1,6 +1,6 @@
 = BitmaskAttributes
 
-Bitmask Attributes allows you to store many boolean values in one integer field.
+Bitmask Attributes allows you to store many boolean values as one integer field in the database.
 
 == Synopsis
 
