@@ -1,0 +1,78 @@
+= BitmaskAttributes
+
+Bitmask Attributes allows you to store many boolean values in one integer field.
+
+== Synopsis
+
+	class User < ActiveRecord::Base
+	  has_bitmask_attributes :notifications do |config|
+	    config.attribute :weekly_newsletter,    0b0001
+	    config.attribute :monthly_newsletter,   0b0010, true
+	  end
+	end
+
+== Examples
+
+
+  # in migration
+  t.integer :notifications_mask
+
+  # in app/models/user.rb
+  class User < ActiveRecord::Base
+    has_bitmask_attributes :notifications do |config|
+      config.method_format 'send_%s'
+      config.attribute :weekly_newsletter,    0b0001
+      config.attribute :monthly_newsletter,   0b0010, true
+	  config.accessible
+	  # config.field_name :notifications_mask # <- default functionality
+    end
+  end
+
+this will create 8 functions: 
+* User#notifications -- returns a Bitmask object representing all values
+* User#+send_weekly_newsletter+? -- predicate
+* User#+send_weekly_newsletter+ -- works just like the predicate, makes it easy to use actionview form helpers
+* User#<tt>send_weekly_newsletter=(value)</tt> -- just give it a boolean value (also takes "0" and "1" or "t" and "f" just like activerecord does for boolean fields)
+* User#+send_monthly_newsletter+?
+* User#+send_monthly_newsletter+
+* User#<tt>send_monthly_newsletter=(value)</tt>
+* User.notifications_mask -- a hash of the masks. ie: { :weekly_newsletter => 1, :monthly_newsletter => 2 }
+the call to +config+.+accessible+ calls <tt>attr_accessible :send_weekly_newsletter, :send_monthly_newsletter</tt> in your model
+
+
+
+=== View Example
+	# in your view
+	<% form_for @user do |f| %>
+		Monthly Newsletter: <%= f.check_box :send_monthly_newsletter? %>
+		or
+		Monthly Newsletter
+		Yes: <%= f.radio_button :send_monthly_newsletter, 'true' %>
+		No: <%= f.radio_button :send_monthly_newsletter, 'false' %>
+	<% end %>
+	
+
+== Config Options
+
+==== attribute(name, mask, default = false)
+Sets up a binary attribute. Creates three functions: name, name?, and name=(true|false)
+* +name+    a symbol, BitmaskAttributes will define
+* +mask+    example: 0b0000001, must be a power of 2
+* +default+   set to true if you want the attribute to default to true
+  
+==== method_format(format)
+* +format+    a printf style format string to create function names
+
+==== accessible
+if you are using attr_accessible in your model and you want to mass-assign your bitmask attributes, you will want to call this
+
+==== field_name(name)
+* +name+    name of the field name in the database where all this info is stored, should be an +integer+
+
+
+
+== BUGS
+
+at the moment, if you reload the model, you still have the old Bitmask object instance
+
+Copyright (c) 2009 Amiel Martin released under the MIT license
