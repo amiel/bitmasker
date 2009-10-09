@@ -75,4 +75,4 @@ if you are using attr_accessible in your model and you want to mass-assign your 
 
 at the moment, if you reload the model, you still have the old Bitmask object instance
 
-Copyright (c) 2009 Amiel Martin released under the MIT license
+Copyright (c) 2009 Amiel Martin, released under the MIT license

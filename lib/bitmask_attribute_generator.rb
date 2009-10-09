@@ -76,7 +76,9 @@ class BitmaskAttributeGenerator
       @base_class.send :define_method, method_name_base + '=' do |value|
         bitmask = send(mask_name)
         bitmask.set attribute, ::ActiveRecord::ConnectionAdapters::Column.value_to_boolean(value)
-        send(field_name + '_will_change!') unless send(field_name + '_changed?')
+				if respond_to?(field_name + 'will_change!') then
+	        send(field_name + '_will_change!') unless send(field_name + '_changed?')
+				end
         self.write_attribute(field_name, bitmask.to_i)
         bitmask.get attribute
       end
