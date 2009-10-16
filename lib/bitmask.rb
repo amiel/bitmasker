@@ -59,9 +59,6 @@ class Bitmask
 		@masks.keys.inject({}){|h,k| h[k] = get k; h }
 	end
 
-	# def [](attr); get attr end :nodoc:
-	# def []=(attr, value); set attr, value end :nodoc:
-
 	# returns boolean value
 	def get(attr)
 		(@data & @masks[attr]) == @masks[attr]
