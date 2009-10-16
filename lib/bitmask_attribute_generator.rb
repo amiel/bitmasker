@@ -41,12 +41,19 @@ class BitmaskAttributeGenerator
     
     bitmask_attributes = @bitmask_attributes
     bitmask_defaults = @bitmask_defaults
+
+    var_name = "@#{mask_name}".to_sym
     
     # define composed_of like helper, retrieves Bitmask object for field
     @base_class.send :define_method, mask_name do
-      var_name = "@#{mask_name}".to_sym
       instance_variable_get(var_name) || instance_variable_set(var_name, Bitmask.new(bitmask_attributes, self.read_attribute(field_name) || bitmask_defaults))
     end
+
+		@base_class.send :define_method, :"reload_with_#{mask_name}" do
+			instance_variable_set(var_name, nil)
+			send :"reload_without_#{mask_name}"
+		end
+		@base_class.send :alias_method_chain, :reload, mask_name
     
     @base_class.send :define_method, "#{mask_name}_was" do
       var_name = "@#{mask_name}".to_sym
