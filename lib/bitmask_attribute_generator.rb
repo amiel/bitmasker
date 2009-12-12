@@ -5,7 +5,7 @@ class BitmaskAttributeGenerator
     @mask_name = mask_name
     @field_name = mask_name.to_s + '_mask'
     # need to make this check, but it doesn't work here
-    # raise ArgumentError, "please add a field in your database named #{@field_name}" unless @base_class.new.respond_to? @field_name
+    @base_class.logger.error("BitmaskAttributes: #{@base_class}##{@mask_name} is expecting a field in your database named #{@field_name}") unless @base_class.new.respond_to? @field_name
     
     @bitmask_attributes = {}
     @bitmask_defaults = {}
@@ -51,6 +51,8 @@ class BitmaskAttributeGenerator
     
     @base_class.send :define_method, :"#{mask_name}=" do |to_set|
       send(mask_name).set_array to_set.reject(&:blank?).collect(&:to_sym)
+      send("write_#{mask_name}!")
+      send(mask_name)
     end
 
 		@base_class.send :define_method, :"reload_with_#{mask_name}" do
@@ -62,6 +64,11 @@ class BitmaskAttributeGenerator
     @base_class.send :define_method, "#{mask_name}_was" do
       var_name = "@#{mask_name}".to_sym
       Bitmask.new(bitmask_attributes, self.send("#{field_name}_was") || bitmask_defaults)
+    end
+    
+    @base_class.send :define_method, "write_#{mask_name}!" do
+      send(field_name + '_will_change!') if respond_to?(field_name + 'will_change!')
+      self.write_attribute(field_name, send(mask_name).to_i)
     end
     
     @base_class.send :class_variable_set, "@@#{field_name}", bitmask_attributes
@@ -87,10 +94,7 @@ class BitmaskAttributeGenerator
       @base_class.send :define_method, method_name_base + '=' do |value|
         bitmask = send(mask_name)
         bitmask.set attribute, ::ActiveRecord::ConnectionAdapters::Column.value_to_boolean(value)
-				if respond_to?(field_name + 'will_change!') then
-	        send(field_name + '_will_change!') unless send(field_name + '_changed?')
-				end
-        self.write_attribute(field_name, bitmask.to_i)
+        send("write_#{mask_name}!")
         bitmask.get attribute
       end
       
