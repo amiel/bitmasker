@@ -39,8 +39,8 @@ class Bitmask
 		case arg
 		when Hash
 			@data = 0
-			arg.each do |key, value|
-				set key, value
+			arg.each do |attr, value|
+				set attr, value
 			end
 		else
 			@data = arg.to_i
@@ -66,11 +66,18 @@ class Bitmask
 
 	# expects a boolean value
 	def set(attr, value)
+	  raise ArgumentError, 'unknown attribute' unless @masks[attr]
 		case value
 		when true
 			@data |=  @masks[attr]
 		when false
 			@data &= ~@masks[attr]
 		end
+	end
+	
+	def set_array(array)
+    @masks.each do |attr, value|
+      set attr, array.include?(attr)
+    end
 	end
 end

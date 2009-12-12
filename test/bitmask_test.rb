@@ -74,4 +74,25 @@ class BitmaskTest < Test::Unit::TestCase
     assert bitmask_one == bitmask_two
     assert bitmask_two != bitmask_three
   end
+  
+  def test_set_array
+    bitmask = Bitmask.new TEST_MASKS, :phone => true, :name => true
+    bitmask.set_array [:phone, :email]
+    assert_equal(bitmask.to_h, {:phone => true, :name => false, :email => true, :gender => false, :birthday => false, :location => false})
+  end
+  
+  def test_set_raises
+    bitmask = Bitmask.new TEST_MASKS, 0
+    assert_raises ArgumentError do
+      bitmask.set :foo, true
+    end
+  end
+  
+  def test_set_array_doesnt_raise
+    bitmask = Bitmask.new TEST_MASKS, :phone => true, :name => true
+    assert_nothing_raised do
+      bitmask.set_array [:phone, :email, :foodebar]
+    end
+    assert_equal(bitmask.to_h, {:phone => true, :name => false, :email => true, :gender => false, :birthday => false, :location => false})
+  end
 end

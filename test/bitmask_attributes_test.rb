@@ -22,6 +22,10 @@ class MockModel
   def read_attribute(sym)
     send sym
   end
+  
+  def reload
+    
+  end
 
   cattr_reader :accessible_attrs
   def self.attr_accessible(*args)
@@ -83,6 +87,30 @@ class BitmaskAttributesTest < Test::Unit::TestCase
   def test_can_access_mask
     assert_equal MockModel.dummy_mask, {:does_stuff => 1, :with_default => 2}
     assert_equal MockModel.another_dummy_mask, {:attribute_has => 1}
+  end
+  
+  def test_array_assignment
+    mock = MockModel.new
+    mock.dummy = [ 'does_stuff' ]
+    assert mock.does_stuff
+    assert !mock.with_default
+    mock.dummy = [ 'does_stuff', 'with_default' ] # should accept strings
+    assert mock.does_stuff
+    assert mock.with_default
+  end
+  
+  def test_empty_array_assignment
+    mock = MockModel.new
+    mock.dummy = []
+    assert !mock.does_stuff
+    assert !mock.with_default
+  end
+  
+  
+  def test_array_assignment_with_method_format
+    mock = MockModel.new
+    mock.another_dummy = [ 'attribute_has' ]
+    assert mock.this_attribute_has_format
   end
   
   # not throwing exception because you can't run migrations when it does
