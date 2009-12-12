@@ -106,11 +106,17 @@ class BitmaskAttributesTest < Test::Unit::TestCase
     assert !mock.with_default
   end
   
-  
   def test_array_assignment_with_method_format
     mock = MockModel.new
     mock.another_dummy = [ 'attribute_has' ]
     assert mock.this_attribute_has_format
+  end
+  
+  def test_array_assignment_with_empty_strings
+    mock = MockModel.new
+    mock.dummy = [ '', 'does_stuff' ]
+    assert mock.does_stuff
+    assert !mock.with_default
   end
   
   # not throwing exception because you can't run migrations when it does

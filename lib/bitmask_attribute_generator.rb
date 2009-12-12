@@ -50,7 +50,7 @@ class BitmaskAttributeGenerator
     end
     
     @base_class.send :define_method, :"#{mask_name}=" do |to_set|
-      send(mask_name).set_array to_set.collect(&:to_sym)
+      send(mask_name).set_array to_set.reject(&:blank?).collect(&:to_sym)
     end
 
 		@base_class.send :define_method, :"reload_with_#{mask_name}" do

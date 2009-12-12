@@ -53,9 +53,9 @@ class BitmaskTest < Test::Unit::TestCase
   
   def test_defaults
     bitmask = Bitmask.new(TEST_MASKS, nil || {:phone => true, :email => true})
-    assert bitmask.get(:phone)
+    assert  bitmask.get(:phone)
     assert !bitmask.get(:name)
-    assert bitmask.get(:email)
+    assert  bitmask.get(:email)
     assert !bitmask.get(:gender)
     assert !bitmask.get(:birthday)
     assert !bitmask.get(:location)
