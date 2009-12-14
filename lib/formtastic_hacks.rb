@@ -9,8 +9,14 @@ module BitmaskAttributes
     # end
     
     def bitmask_attributes_input(method, options)
-      methods = @object.send(method).masks.keys
-      check_boxes_input(method, options.merge(:collection => methods.collect{|m| [ localized_attribute_string(m, nil, :label) || m.to_s.titleize, m ]}))
+      bitmask_attribute_options = @object.class.bitmask_attributes[method.to_sym]
+      
+      list_item_content = bitmask_attribute_options[:attributes].collect do |attr|
+        m = bitmask_attribute_options[:method_format] % attr
+        template.content_tag(:li, boolean_input(m, options))
+      end
+      
+      field_set_and_list_wrapping_for_method(method, options, list_item_content)
     end
   end
 end

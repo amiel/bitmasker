@@ -74,6 +74,8 @@ class BitmaskAttributeGenerator
     @base_class.send :class_variable_set, "@@#{field_name}", bitmask_attributes
     @base_class.send :class_eval, %(class << self; def #{field_name}; @@#{field_name};end;end)
     
+    set_bitmask_attributes_class_variable
+    
     @bitmask_attributes.each do |attribute, mask|
       
       method_name_base = @method_format % attribute
@@ -99,6 +101,23 @@ class BitmaskAttributeGenerator
       end
       
     end
+  end
+  
+  def set_bitmask_attributes_class_variable
+    class_reflection = begin
+      @base_class.send :class_variable_get, :"@@bitmask_attributes" || {}
+    rescue NameError
+      {}
+    end
+    
+    class_reflection[@mask_name] = {
+      :attributes => @bitmask_attributes.keys,
+      :field_name => @field_name,
+      :method_format => @method_format,
+    }
+    @base_class.send :class_variable_set, :"@@bitmask_attributes", class_reflection
+    @base_class.send :class_eval, %(class << self; def bitmask_attributes; @@bitmask_attributes;end;end)
+    
   end
 end
 
