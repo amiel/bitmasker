@@ -66,7 +66,7 @@ class Bitmask
 
 	# expects a boolean value
 	def set(attr, value)
-	  raise ArgumentError, 'unknown attribute' unless @masks[attr]
+	  raise ArgumentError, "unknown attribute: #{attr}" unless @masks[attr]
 		case value
 		when true
 			@data |=  @masks[attr]
