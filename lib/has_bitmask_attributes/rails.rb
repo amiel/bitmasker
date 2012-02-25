@@ -1,9 +1,8 @@
 
-
 module HasBitmaskAttributes
-  class Rails < ::Rails::Engine
-    config.after_initialize do
-      ActiveRecord::Base.send :extend, HasBitmaskAttributes::ActiveRecord
+  class Railtie < ::Rails::Railtie
+    initializer 'has_bitmask_attribtes.activerecord_extensions' do |app|
+      ActiveRecord::Base.send :extend, HasBitmaskAttributes::Model
     end
   end
 end
