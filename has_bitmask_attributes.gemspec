@@ -8,8 +8,11 @@ Gem::Specification.new do |s|
   s.authors     = ["Amiel Martin"]
   s.email       = ["amiel@carnesmedia.com"]
   s.homepage    = "http://github.com/amiel/has_bitmask_attributes"
-  s.summary     = %q{TODO: Write a gem summary}
-  s.description = %q{TODO: Write a gem description}
+  s.summary     = %q{has_bitmask_attributes allows you to store many boolean values as one integer field in the database.}
+  s.description = %q{
+    has_bitmask_attributes allows you to store many boolean values as one integer field in the database.
+    It's quite old but works well.
+  }
 
   s.rubyforge_project = "has_bitmask_attributes"
 

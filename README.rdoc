@@ -1,4 +1,4 @@
-= BitmaskAttributes
+= HasBitmaskAttributes
 
 Bitmask Attributes allows you to store many boolean values as one integer field in the database.
 
@@ -60,7 +60,7 @@ the call to +config+.+accessible+ calls <tt>attr_accessible :send_weekly_newslet
 
 ==== config.attribute(name, mask, default = false)
 Sets up a binary attribute. Defines three functions: name, name?, and name=(true|false)
-* +name+    a symbol, BitmaskAttributes will define
+* +name+    a symbol, HasBitmaskAttributes will define
 * +mask+    example: 0b0000001, must be a power of 2
 * +default+   set to true if you want the attribute to default to true
   
