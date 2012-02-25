@@ -1,17 +1,10 @@
-require 'test/unit'
-
-require 'active_support/all'
-require 'active_record'
-
-require_relative '../lib/bitmask'
-require_relative '../lib/has_bitmask_attributes'
-require_relative '../lib/bitmask_attribute_generator'
+require_relative 'test_helper'
 
 class MockModel
   
   attr_accessor :dummy_mask
   attr_accessor :another_dummy_mask
-  extend ::HasBitmaskAttributes
+  extend HasBitmaskAttributes::Model
   
   def write_attribute(sym, value)
     send "#{sym}=", value

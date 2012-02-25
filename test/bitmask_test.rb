@@ -1,5 +1,4 @@
-require 'test/unit'
-require_relative '../lib/bitmask.rb'
+require_relative 'test_helper'
 
 class BitmaskTest < Test::Unit::TestCase
   TEST_MASKS = {
