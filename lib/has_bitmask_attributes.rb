@@ -1,4 +1,3 @@
-
 require_relative 'bitmask_attribute_generator'
 
 
@@ -19,3 +18,5 @@ module HasBitmaskAttributes
     end
   end
 end
+
+require_relative 'rails'
