@@ -1,8 +1,5 @@
 require 'test/unit'
-# require '../lib/bitmask'
-
-$:.unshift File.dirname(__FILE__) + '/../lib'
-require File.dirname(__FILE__) + '/../lib/bitmask'
+require_relative '../lib/bitmask.rb'
 
 class BitmaskTest < Test::Unit::TestCase
   TEST_MASKS = {

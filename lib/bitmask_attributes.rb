@@ -10,4 +10,11 @@ module BitmaskAttributes
     config.generate
   end
 
+  def value_to_boolean(value)
+    if defined? ::ActiveRecord::ConnectionAdapters::Column
+      ::ActiveRecord::ConnectionAdapters::Column.value_to_boolean(value)
+    else
+      ['1', 1, 't', 'true', true].include? value
+    end
+  end
 end

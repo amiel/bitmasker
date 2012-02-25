@@ -1,13 +1,11 @@
 require 'test/unit'
 
-
-require 'rubygems'
+require 'active_support/all'
 require 'active_record'
 
-$:.unshift File.dirname(__FILE__) + '/../lib'
-require File.dirname(__FILE__) + '/../lib/bitmask'
-require File.dirname(__FILE__) + '/../lib/bitmask_attributes'
-require File.dirname(__FILE__) + '/../init'
+require_relative '../lib/bitmask'
+require_relative '../lib/bitmask_attributes'
+require_relative '../lib/bitmask_attribute_generator'
 
 class MockModel
   
@@ -27,7 +25,14 @@ class MockModel
     
   end
 
-  cattr_reader :accessible_attrs
+  def self.accessible_attrs
+    @@accessible_attrs
+  end
+
+  def accessible_attrs
+    @@accessible_attrs
+  end
+
   def self.attr_accessible(*args)
     @@accessible_attrs ||= []
     @@accessible_attrs += args

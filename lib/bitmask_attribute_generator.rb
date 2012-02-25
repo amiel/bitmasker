@@ -41,7 +41,7 @@ class BitmaskAttributeGenerator
     bitmask_attributes = @bitmask_attributes
     bitmask_defaults = @bitmask_defaults
 
-    var_name = :"@#{mask_name}".to_sym
+    var_name = :"@#{mask_name}"
     
     # define composed_of like helper, retrieves Bitmask object for field
     @base_class.send :define_method, mask_name do
@@ -94,7 +94,7 @@ class BitmaskAttributeGenerator
       # define setter
       @base_class.send :define_method, method_name_base + '=' do |value|
         bitmask = send(mask_name)
-        bitmask.set attribute, ::ActiveRecord::ConnectionAdapters::Column.value_to_boolean(value)
+        bitmask.set attribute, self.class.value_to_boolean(value)
         send("write_#{mask_name}!")
         bitmask.get attribute
       end
