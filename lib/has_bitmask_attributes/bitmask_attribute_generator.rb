@@ -34,7 +34,7 @@ module HasBitmaskAttributes
     end
 
     def generate
-  		@base_class.logger.error("HasBitmaskAttributes: #{@base_class}##{@mask_name} is expecting a field in your database named #{@field_name}") unless @base_class.new.respond_to? @field_name
+      # @base_class.logger.error("HasBitmaskAttributes: #{@base_class}##{@mask_name} is expecting a field in your database named #{@field_name}") unless @base_class.new.respond_to? @field_name
 
       # must be in local scope to work within define_method
       field_name = @field_name
