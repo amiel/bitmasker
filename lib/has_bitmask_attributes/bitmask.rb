@@ -29,7 +29,7 @@ class Bitmask
   end
 
   # create an object with which to manipulate an integer as a set of boolean values
-  # 
+  #
   # arguments
   # masks::  a Hash where the key is the boolean attribute and the value is the bitmask.
   #             { :some_attribute => 0b0001, :another_attribute => 0b0010 }
@@ -50,11 +50,11 @@ class Bitmask
   attr_reader :masks
 
   def to_i; @data end
-  
+
   def to_a
     @masks.keys.sort{|a,b| @masks[a] <=> @masks[b] }.collect{|k| [k, get(k)] }
   end
-  
+
   def to_h
     @masks.keys.inject({}){|h,k| h[k] = get k; h }
   end
@@ -74,7 +74,7 @@ class Bitmask
       @data &= ~@masks[attr]
     end
   end
-  
+
   def set_array(array)
     @masks.each do |attr, value|
       set attr, array.include?(attr)
