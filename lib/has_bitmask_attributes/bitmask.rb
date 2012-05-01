@@ -1,10 +1,11 @@
-# represents a set of boolean values as an Integer
+# Bitmask represents a set of boolean values as an Integer.
 #
 # Examples:
+#
 #   masks = {
-#           :cat  => 0b001,
-#           :dog  => 0b010,
-#           :fish => 0b100
+#           :cat  => 0b0001,
+#           :dog  => 0b0010,
+#           :fish => 0b0100
 #         }
 #
 #   bitmask = Bitmask.new(masks, {:cat => true})
@@ -22,6 +23,7 @@
 #   bitmask.to_i.to_s(2)    # => "101"
 #
 #   Bitmask.new(masks, 5) == Bitmask.new(masks, { :cat => true, :dog => false, :fish => true }) # => true
+#
 class Bitmask
 
   def ==(other)
@@ -49,14 +51,20 @@ class Bitmask
 
   attr_reader :masks
 
-  def to_i; @data end
+  def to_i
+    @data
+  end
 
   def to_a
-    @masks.keys.sort{|a,b| @masks[a] <=> @masks[b] }.collect{|k| [k, get(k)] }
+    @masks.keys.sort { |a,b| @masks[a] <=> @masks[b] }.collect { |k| [k, get(k)] }
+  end
+
+  def each(&blk)
+    to_a.each(&blk)
   end
 
   def to_h
-    @masks.keys.inject({}){|h,k| h[k] = get k; h }
+    @masks.keys.inject({}) { |h, k| h[k] = get k; h }
   end
 
   # returns boolean value
