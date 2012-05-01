@@ -4,12 +4,13 @@ Bitmask Attributes allows you to store many boolean values as one integer field 
 
 == Synopsis
 
-	class User < ActiveRecord::Base
-	  has_bitmask_attributes :notifications do |config|
-	    config.attribute :weekly_newsletter,    0b0001
-	    config.attribute :monthly_newsletter,   0b0010, true
-	  end
-	end
+
+  class User < ActiveRecord::Base
+    has_bitmask_attributes :notifications do |config|
+      config.attribute :weekly_newsletter,    0b0001
+      config.attribute :monthly_newsletter,   0b0010, true
+    end
+  end
 
 == RDOC
 
@@ -46,14 +47,15 @@ the call to +config+.+accessible+ calls <tt>attr_accessible :send_weekly_newslet
 
 
 === View Example
-	# in your view
-	<% form_for @user do |f| %>
-		Monthly Newsletter: <%= f.check_box :send_monthly_newsletter? %>
-		or
-		Monthly Newsletter
-		Yes: <%= f.radio_button :send_monthly_newsletter, 'true' %>
-		No: <%= f.radio_button :send_monthly_newsletter, 'false' %>
-	<% end %>
+
+  # in your view
+  <% form_for @user do |f| %>
+    Monthly Newsletter: <%= f.check_box :send_monthly_newsletter? %>
+    or
+    Monthly Newsletter
+    Yes: <%= f.radio_button :send_monthly_newsletter, 'true' %>
+    No: <%= f.radio_button :send_monthly_newsletter, 'false' %>
+  <% end %>
 	
 
 == Config Options
