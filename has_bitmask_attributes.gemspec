@@ -23,6 +23,7 @@ Gem::Specification.new do |s|
   # specify any dependencies here; for example:
   s.add_development_dependency "activerecord", '~> 3.0'
   s.add_runtime_dependency "activesupport", '~> 3.0'
+  s.add_runtime_dependency "activemodel", '~> 3.0'
   # active_support requires i18n
   s.add_runtime_dependency "i18n"
 end

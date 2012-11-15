@@ -1,7 +1,23 @@
 
 module HasBitmaskAttributes
-  # need to document this
-  class BitmaskAttributeGenerator
+
+  class BitmaskAttributes
+    include ActiveModel::AttributeMethods
+    attribute_method_prefix 'get_'
+    attribute_method_suffix '?'
+    attribute_method_suffix '='
+
+    def initialize(attributes)
+      @attributes = attributes
+
+    end
+
+    def get_attribute(attribute)
+    end
+
+  end
+
+  class Generator
     def initialize(mask_name, base)
       @base_class = base
       @mask_name = mask_name
@@ -34,11 +50,21 @@ module HasBitmaskAttributes
     end
 
     def generate
-      # @base_class.logger.error("HasBitmaskAttributes: #{@base_class}##{@mask_name} is expecting a field in your database named #{@field_name}") unless @base_class.new.respond_to? @field_name
+
 
       # must be in local scope to work within define_method
       field_name = @field_name
       mask_name = @mask_name
+
+      @base_class.class_eval {
+        define_method mask_name do
+          BitmaskAttribute.new()
+        end
+      }
+
+      @bitmask_attributes.each do |attribute, mask|
+
+      end
 
       bitmask_attributes = @bitmask_attributes
       bitmask_defaults = @bitmask_defaults
@@ -56,11 +82,11 @@ module HasBitmaskAttributes
         send(mask_name)
       end
 
-  		@base_class.send :define_method, :"reload_with_#{mask_name}" do
-  			instance_variable_set(var_name, nil)
-  			send :"reload_without_#{mask_name}"
-  		end
-  		@base_class.send :alias_method_chain, :reload, mask_name
+      @base_class.send :define_method, :"reload_with_#{mask_name}" do
+        instance_variable_set(var_name, nil)
+        send :"reload_without_#{mask_name}"
+      end
+      @base_class.send :alias_method_chain, :reload, mask_name
 
       @base_class.send :define_method, "#{mask_name}_was" do
         var_name = "@#{mask_name}".to_sym
@@ -106,10 +132,10 @@ module HasBitmaskAttributes
 
     def set_bitmask_attributes_class_variable
       class_reflection = begin
-        @base_class.send :class_variable_get, :"@@bitmask_attributes" || {}
-      rescue NameError
-        {}
-      end
+                           @base_class.send :class_variable_get, :"@@bitmask_attributes" || {}
+                         rescue NameError
+                           {}
+                         end
 
       class_reflection[@mask_name] = {
         :attributes => @bitmask_attributes.keys,

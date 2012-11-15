@@ -1,4 +1,3 @@
-p $:
 require 'test_helper'
 
 class MockModel
@@ -8,7 +7,7 @@ class MockModel
   extend HasBitmaskAttributes::Model
 
   def write_attribute(sym, value)
-    send "#{sym}=", value
+    send "#{ sym }=", value
   end
 
   def read_attribute(sym)
@@ -60,7 +59,7 @@ class BitmaskAttributesTest < Test::Unit::TestCase
 
   def test_default
     mock = MockModel.new
-    assert mock.with_default?, "should have a default: mock.dummy_mask is #{mock.dummy_mask.inspect} mock.dummy is #{mock.dummy.inspect}"
+    assert mock.with_default?, "should have a default: mock.dummy_mask is #{ mock.dummy_mask.inspect } mock.dummy is #{ mock.dummy.inspect }"
     mock.with_default = false
     assert !mock.with_default?, 'setting method after default failed'
   end
@@ -84,16 +83,16 @@ class BitmaskAttributesTest < Test::Unit::TestCase
   end
 
   def test_can_access_mask
-    assert_equal MockModel.dummy_mask, {:does_stuff => 1, :with_default => 2}
-    assert_equal MockModel.another_dummy_mask, {:attribute_has => 1}
+    assert_equal MockModel.dummy_mask, { :does_stuff => 1, :with_default => 2 }
+    assert_equal MockModel.another_dummy_mask, { :attribute_has => 1 }
   end
 
   def test_array_assignment
     mock = MockModel.new
-    mock.dummy = [ 'does_stuff' ]
+    mock.dummy = ['does_stuff']
     assert mock.does_stuff
     assert !mock.with_default
-    mock.dummy = [ 'does_stuff', 'with_default' ] # should accept strings
+    mock.dummy = ['does_stuff', 'with_default'] # should accept strings
     assert mock.does_stuff
     assert mock.with_default
   end
@@ -107,13 +106,13 @@ class BitmaskAttributesTest < Test::Unit::TestCase
 
   def test_array_assignment_with_method_format
     mock = MockModel.new
-    mock.another_dummy = [ 'attribute_has' ]
+    mock.another_dummy = ['attribute_has']
     assert mock.this_attribute_has_format
   end
 
   def test_array_assignment_with_empty_strings
     mock = MockModel.new
-    mock.dummy = [ '', 'does_stuff' ]
+    mock.dummy = ['', 'does_stuff']
     assert mock.does_stuff
     assert !mock.with_default
   end
