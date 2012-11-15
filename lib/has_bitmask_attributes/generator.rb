@@ -1,31 +1,12 @@
-
 module HasBitmaskAttributes
-
-  class BitmaskAttributes
-    include ActiveModel::AttributeMethods
-    attribute_method_prefix 'get_'
-    attribute_method_suffix '?'
-    attribute_method_suffix '='
-
-    def initialize(attributes)
-      @attributes = attributes
-
-    end
-
-    def get_attribute(attribute)
-    end
-
-  end
-
   class Generator
-    def initialize(mask_name, base)
-      @base_class = base
-      @mask_name = mask_name
-      @field_name = mask_name.to_s + '_mask'
-
+    def initialize(mask_name, model)
       @bitmask_attributes = {}
       @bitmask_defaults = {}
-      @method_format = '%s'
+
+      @model = model
+      @mask_name = mask_name
+      @field_name = mask_name.to_s + '_mask'
 
       @use_attr_accessible = false
     end
@@ -42,7 +23,7 @@ module HasBitmaskAttributes
 
     def attribute(name, mask, default = false)
       @bitmask_attributes[name] = mask
-      @bitmask_defaults[name] = true if default
+      @bitmask_defaults[name] = default
     end
 
     def accessible
@@ -50,101 +31,20 @@ module HasBitmaskAttributes
     end
 
     def generate
+      klass = BitmaskAttributes.make(@model, @field_name, @bitmask_attributes, @bitmask_defaults)
 
-
-      # must be in local scope to work within define_method
-      field_name = @field_name
-      mask_name = @mask_name
-
-      @base_class.class_eval {
-        define_method mask_name do
-          BitmaskAttribute.new()
-        end
-      }
+      @model.send :define_method, @mask_name do
+        klass.new(self)
+      end
 
       @bitmask_attributes.each do |attribute, mask|
+        @model.delegate attribute, "#{attribute}?", "#{attribute}=",
+          "#{attribute}_was",
+          to: @mask_name
 
-      end
-
-      bitmask_attributes = @bitmask_attributes
-      bitmask_defaults = @bitmask_defaults
-
-      var_name = :"@#{mask_name}"
-
-      # define composed_of like helper, retrieves Bitmask object for field
-      @base_class.send :define_method, mask_name do
-        instance_variable_get(var_name) || instance_variable_set(var_name, Bitmask.new(bitmask_attributes, self.read_attribute(field_name) || bitmask_defaults))
-      end
-
-      @base_class.send :define_method, :"#{mask_name}=" do |to_set|
-        send(mask_name).set_array to_set.reject(&:blank?).collect(&:to_sym)
-        send("write_#{mask_name}!")
-        send(mask_name)
-      end
-
-      @base_class.send :define_method, :"reload_with_#{mask_name}" do
-        instance_variable_set(var_name, nil)
-        send :"reload_without_#{mask_name}"
-      end
-      @base_class.send :alias_method_chain, :reload, mask_name
-
-      @base_class.send :define_method, "#{mask_name}_was" do
-        var_name = "@#{mask_name}".to_sym
-        Bitmask.new(bitmask_attributes, self.send("#{field_name}_was") || bitmask_defaults)
-      end
-
-      @base_class.send :define_method, "write_#{mask_name}!" do
-        send(field_name + '_will_change!') if respond_to?(field_name + '_will_change!')
-        write_attribute(field_name, send(mask_name).to_i)
-      end
-
-      @base_class.send :class_variable_set, "@@#{field_name}", bitmask_attributes
-      @base_class.send :class_eval, %(class << self; def #{field_name}; @@#{field_name};end;end)
-
-      set_bitmask_attributes_class_variable
-
-      @bitmask_attributes.each do |attribute, mask|
-
-        method_name_base = @method_format % attribute
-
-        @base_class.send :attr_accessible, method_name_base if @use_attr_accessible
-
-        # define predicate
-        @base_class.send :define_method, method_name_base + '?' do
-          send(mask_name).get attribute
-        end
-
-        # define predicate without ? for actionview::formhelper
-        @base_class.send :define_method, method_name_base do
-          send(mask_name).get attribute
-        end
-
-        # define setter
-        @base_class.send :define_method, method_name_base + '=' do |value|
-          bitmask = send(mask_name)
-          bitmask.set attribute, self.class.value_to_boolean(value)
-          send("write_#{mask_name}!")
-          bitmask.get attribute
-        end
-
+        @model.attr_accessible attribute if @use_attr_accessible
       end
     end
 
-    def set_bitmask_attributes_class_variable
-      class_reflection = begin
-                           @base_class.send :class_variable_get, :"@@bitmask_attributes" || {}
-                         rescue NameError
-                           {}
-                         end
-
-      class_reflection[@mask_name] = {
-        :attributes => @bitmask_attributes.keys,
-        :field_name => @field_name,
-        :method_format => @method_format,
-      }
-      @base_class.send :class_variable_set, :"@@bitmask_attributes", class_reflection
-      @base_class.send :class_eval, %(class << self; def bitmask_attributes; @@bitmask_attributes;end;end)
-
-    end
   end
 end

@@ -6,16 +6,12 @@ class MockModel
   attr_accessor :another_dummy_mask
   extend HasBitmaskAttributes::Model
 
-  def write_attribute(sym, value)
+  def []=(sym, value)
     send "#{ sym }=", value
   end
 
-  def read_attribute(sym)
+  def [](sym)
     send sym
-  end
-
-  def reload
-
   end
 
   def self.accessible_attrs
@@ -38,11 +34,9 @@ class MockModel
   end
 
   has_bitmask_attributes :another_dummy do |config|
-    config.method_format 'this_%s_format'
-    config.attribute :attribute_has, 0b001
+    config.attribute :an_accessible_attribute, 0b001
     config.accessible
   end
-
 
 end
 
@@ -64,13 +58,6 @@ class BitmaskAttributesTest < Test::Unit::TestCase
     assert !mock.with_default?, 'setting method after default failed'
   end
 
-  def test_method_format
-    mock = MockModel.new
-    assert !mock.this_attribute_has_format?
-    mock.this_attribute_has_format = true
-    assert mock.this_attribute_has_format?
-  end
-
   def test_predicate_without_?
     mock = MockModel.new
     mock.does_stuff = true
@@ -79,43 +66,33 @@ class BitmaskAttributesTest < Test::Unit::TestCase
 
   def test_accessible
     mock = MockModel.new
-    assert_equal ['this_attribute_has_format'], mock.accessible_attrs
+    assert_equal [:an_accessible_attribute], mock.accessible_attrs
   end
 
-  def test_can_access_mask
-    assert_equal MockModel.dummy_mask, { :does_stuff => 1, :with_default => 2 }
-    assert_equal MockModel.another_dummy_mask, { :attribute_has => 1 }
-  end
 
-  def test_array_assignment
-    mock = MockModel.new
-    mock.dummy = ['does_stuff']
-    assert mock.does_stuff
-    assert !mock.with_default
-    mock.dummy = ['does_stuff', 'with_default'] # should accept strings
-    assert mock.does_stuff
-    assert mock.with_default
-  end
+#  def test_array_assignment
+#    mock = MockModel.new
+#    mock.dummy = ['does_stuff']
+#    assert mock.does_stuff
+#    assert !mock.with_default
+#    mock.dummy = ['does_stuff', 'with_default'] # should accept strings
+#    assert mock.does_stuff
+#    assert mock.with_default
+#  end
 
-  def test_empty_array_assignment
-    mock = MockModel.new
-    mock.dummy = []
-    assert !mock.does_stuff
-    assert !mock.with_default
-  end
+#  def test_empty_array_assignment
+#    mock = MockModel.new
+#    mock.dummy = []
+#    assert !mock.does_stuff
+#    assert !mock.with_default
+#  end
 
-  def test_array_assignment_with_method_format
-    mock = MockModel.new
-    mock.another_dummy = ['attribute_has']
-    assert mock.this_attribute_has_format
-  end
-
-  def test_array_assignment_with_empty_strings
-    mock = MockModel.new
-    mock.dummy = ['', 'does_stuff']
-    assert mock.does_stuff
-    assert !mock.with_default
-  end
+#  def test_array_assignment_with_empty_strings
+#    mock = MockModel.new
+#    mock.dummy = ['', 'does_stuff']
+#    assert mock.does_stuff
+#    assert !mock.with_default
+#  end
 
   # not throwing exception because you can't run migrations when it does
   # def test_raises_without_field
