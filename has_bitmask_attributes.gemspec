@@ -11,15 +11,14 @@ Gem::Specification.new do |s|
   s.summary     = %q{has_bitmask_attributes allows you to store many boolean values as one integer field in the database.}
   s.description = %q{
     has_bitmask_attributes allows you to store many boolean values as one integer field in the database.
-    It's quite old but works well.
   }
 
-  s.rubyforge_project = "has_bitmask_attributes"
+  s.files = Dir["{lib}/**/*"] + ["MIT-LICENSE", "Rakefile", "README.md"]
+  s.test_files = Dir["test/**/*"]
 
-  s.files         = `git ls-files`.split("\n")
-  s.test_files    = `git ls-files -- {test,spec,features}/*`.split("\n")
-  s.executables   = `git ls-files -- bin/*`.split("\n").map{ |f| File.basename(f) }
   s.require_paths = ["lib"]
+
+  s.add_dependency 'bitmask'
 
   # specify any dependencies here; for example:
   # s.add_development_dependency "rspec"
