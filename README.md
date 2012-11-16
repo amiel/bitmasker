@@ -25,12 +25,12 @@ Examples
 
   # in app/models/user.rb
   class User < ActiveRecord::Base
-      has_bitmask_attributes :notifications do |config|
-          config.attribute :send_weekly_newsletter,    0b0001
-          config.attribute :send_monthly_newsletter,   0b0010, true
-          config.accessible
-          # config.field_name :notifications_mask # <- default functionality
-      end
+    has_bitmask_attributes :notifications do |config|
+      config.attribute :send_weekly_newsletter,    0b0001
+      config.attribute :send_monthly_newsletter,   0b0010, true
+      config.accessible
+      # config.field_name :notifications_mask # <- default functionality
+    end
   end
 ```
 
