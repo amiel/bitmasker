@@ -4,3 +4,5 @@ source :rubygems
 gemspec
 
 gem 'mocha', require: false
+gem 'turn', require: false
+gem 'minitest', require: false

@@ -1,6 +1,6 @@
 require 'test_helper'
 
-class HasBitmaskAttributes::BitmaskAttributesTest < Test::Unit::TestCase
+class HasBitmaskAttributes::BitmaskAttributesTest < MiniTest::Unit::TestCase
 
   MockModel = Class.new do
     def self.value_to_boolean(value)
