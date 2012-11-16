@@ -55,4 +55,9 @@ class HasBitmaskAttributes::BitmaskAttributesTest < MiniTest::Unit::TestCase
     assert_equal false, subject.send_monthly_newsletter_was
     assert_equal true, subject.send_weekly_email_was
   end
+
+  def test_to_a
+    model_instance.expects(:[]).with('email_mask').returns(2)
+    assert_equal ['send_monthly_newsletter'], subject.to_a
+  end
 end

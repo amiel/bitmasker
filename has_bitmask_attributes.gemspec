@@ -18,7 +18,7 @@ Gem::Specification.new do |s|
 
   s.require_paths = ["lib"]
 
-  s.add_dependency 'bitmask'
+  s.add_dependency 'bitmask', '~> 0.1.0'
 
   # specify any dependencies here; for example:
   s.add_development_dependency "activerecord", '~> 3.0'

@@ -48,6 +48,10 @@ module HasBitmaskAttributes
       Bitmask.new(bitmask_attributes, was).get attribute
     end
 
+    def to_a
+      bitmask.to_a
+    end
+
     # Methods for the model
 
     def read
