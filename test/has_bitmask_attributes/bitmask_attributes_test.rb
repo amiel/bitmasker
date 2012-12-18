@@ -18,8 +18,7 @@ class HasBitmaskAttributes::BitmaskAttributesTest < MiniTest::Unit::TestCase
 
   def setup
     @klass = HasBitmaskAttributes::BitmaskAttributes.make(
-      MockModel,
-      'email_mask',
+      MockModel, 'email_mask',
       send_weekly_email: 0b0001,
       send_monthly_newsletter: 0b0010,
     )
@@ -27,6 +26,10 @@ class HasBitmaskAttributes::BitmaskAttributesTest < MiniTest::Unit::TestCase
 
   def subject
     @subject ||= @klass.new(model_instance)
+  end
+
+  def test_klass_to_s
+    assert_equal "HasBitmaskAttributes::BitmaskAttributes(HasBitmaskAttributes::BitmaskAttributesTest::MockModel#email_mask)", @klass.to_s
   end
 
   def test_set_attribute

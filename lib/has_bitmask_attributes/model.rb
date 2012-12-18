@@ -1,5 +1,3 @@
-
-
 module HasBitmaskAttributes
   module Model
     def has_bitmask_attributes(name)

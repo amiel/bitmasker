@@ -13,7 +13,8 @@ module HasBitmaskAttributes
 
 
     attr_writer :method_format
-    # makes the config dsl more consistent, allowing config.method_format '%s' instead of config.method_format = '%s'
+    # makes the config dsl more consistent, allowing `config.method_format '%s'`
+    # instead of `config.method_format = '%s'`
     alias_method :method_format, :method_format=
 
 

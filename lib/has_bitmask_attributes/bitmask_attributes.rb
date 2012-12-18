@@ -21,6 +21,10 @@ module HasBitmaskAttributes
       klass.defaults = defaults.stringify_keys
       klass.field_name = field_name
 
+      def klass.to_s
+        "#{superclass}(#{model_class}##{field_name})"
+      end
+
       klass
     end
 
