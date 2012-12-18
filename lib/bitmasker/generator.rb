@@ -8,6 +8,8 @@ module Bitmasker
       @mask_name = mask_name
       @field_name = mask_name.to_s + '_mask'
 
+      @scope_name = mask_name.to_s + '_scope'
+
       @use_attr_accessible = false
     end
 
@@ -33,15 +35,22 @@ module Bitmasker
 
     def generate
       klass = BitmaskAttributes.make(@model, @field_name, @bitmask_attributes, @bitmask_defaults)
+      scope_klass = BitmaskScope.make(@model, @field_name, @bitmask_attributes)
 
       @model.send :define_method, @mask_name do
         klass.new(self)
       end
 
+      @model.singleton_class.send :define_method, @scope_name do
+        scope_klass.new(self)
+      end
+
       @bitmask_attributes.each do |attribute, mask|
-        @model.delegate attribute, "#{attribute}?", "#{attribute}=",
-          "#{attribute}_was",
+        @model.delegate attribute, "#{attribute}?", "#{attribute}=", "#{attribute}_was",
           to: @mask_name
+
+        @model.singleton_class.delegate "with_#{attribute}",
+          to: @scope_name
 
         @model.attr_accessible attribute if @use_attr_accessible
       end
