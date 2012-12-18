@@ -2,6 +2,7 @@ module Bitmasker
   class BitmaskScope
     include ActiveModel::AttributeMethods
     attribute_method_prefix 'with_'
+    attribute_method_prefix 'without_'
 
     class_attribute :model_class
     class_attribute :field_name
@@ -25,14 +26,25 @@ module Bitmasker
       klass
     end
 
-    def initialize
-      @bitmask = Bitmask.new(bitmask_attributes, 0)
+    def bitmask
+      Bitmask.new(bitmask_attributes, 0)
     end
 
-    # TODO: This (the unused _ attribute) tells me I have the design wrong
+    # REVIEW: This (the unused _ attribute) tells me I have the design wrong
     def with_attribute(_, attributes)
-      @bitmask.set_array(Array.wrap(attributes).map(&:to_s))
-      model_class.where("#{field_name} = #{field_name} & #{@bitmask.to_i}")
+      mask = bitmask
+      mask.set_array(Array.wrap(attributes).map(&:to_s))
+
+      # TODO: Test lots of databases
+      model_class.where("#{field_name} & :mask = :mask", mask: mask.to_i)
+    end
+
+    def without_attribute(_, attributes)
+      mask = bitmask
+      mask.set_array(Array.wrap(attributes).map(&:to_s))
+
+      # TODO: Test lots of databases
+      model_class.where("#{field_name} & :mask = 0 OR #{field_name} IS NULL", mask: mask.to_i)
     end
 
   end

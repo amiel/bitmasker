@@ -45,7 +45,8 @@ module Bitmasker
         scope_klass.new
       end
 
-      @model.singleton_class.delegate "with_#{@mask_name}", to: @scope_name
+      @model.singleton_class.delegate "with_#{@mask_name}", "without_#{@mask_name}",
+        to: @scope_name
 
       @bitmask_attributes.each do |attribute, mask|
         @model.delegate attribute, "#{attribute}?", "#{attribute}=", "#{attribute}_was",
