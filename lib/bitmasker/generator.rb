@@ -1,4 +1,4 @@
-module HasBitmaskAttributes
+module Bitmasker
   class Generator
     def initialize(mask_name, model)
       @bitmask_attributes = {}

@@ -1,7 +1,7 @@
-HasBitmaskAttributes
-====================
+Bitmasker
+=========
 
-Bitmask Attributes allows you to store many boolean values as one integer field in the database.
+Bitmasker allows you to store many boolean values as one integer field in the database.
 
 Synopsis
 --------
@@ -68,7 +68,7 @@ Config Options
 `config.attribute(name, mask, default = false)`
 
 Sets up a binary attribute. Defines three functions: name, name?, and name=(true|false)
-* `name`    a symbol, HasBitmaskAttributes will define
+* `name`    a symbol, Bitmasker will define
 * `mask`    example: 0b0000001, must be a power of 2
 * `default`   set to true if you want the attribute to default to true
 

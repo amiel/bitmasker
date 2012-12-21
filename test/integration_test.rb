@@ -4,7 +4,7 @@ class MockModel
 
   attr_accessor :dummy_mask
   attr_accessor :another_dummy_mask
-  extend HasBitmaskAttributes::Model
+  extend Bitmasker::Model
 
   def []=(sym, value)
     send "#{ sym }=", value

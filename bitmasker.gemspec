@@ -1,16 +1,16 @@
 # -*- encoding: utf-8 -*-
 $:.push File.expand_path("../lib", __FILE__)
-require "has_bitmask_attributes/version"
+require "bitmasker/version"
 
 Gem::Specification.new do |s|
-  s.name        = "has_bitmask_attributes"
-  s.version     = HasBitmaskAttributes::VERSION
+  s.name        = "bitmasker"
+  s.version     = Bitmasker::VERSION
   s.authors     = ["Amiel Martin"]
   s.email       = ["amiel@carnesmedia.com"]
-  s.homepage    = "http://github.com/amiel/has_bitmask_attributes"
-  s.summary     = %q{has_bitmask_attributes allows you to store many boolean values as one integer field in the database.}
+  s.homepage    = "https://github.com/amiel/bitmasker"
+  s.summary     = %q{Bitmasker allows you to store many boolean values as one integer field in the database.}
   s.description = %q{
-    has_bitmask_attributes allows you to store many boolean values as one integer field in the database.
+    Bitmasker allows you to store many boolean values as one integer field in the database.
   }
 
   s.files = Dir["{lib}/**/*"] + ["MIT-LICENSE", "Rakefile", "README.md"]

@@ -1,6 +1,6 @@
 require 'test_helper'
 
-class HasBitmaskAttributes::BitmaskAttributesTest < MiniTest::Unit::TestCase
+class Bitmasker::BitmaskAttributesTest < MiniTest::Unit::TestCase
 
   MockModel = Class.new do
     def self.value_to_boolean(value)
@@ -17,7 +17,7 @@ class HasBitmaskAttributes::BitmaskAttributesTest < MiniTest::Unit::TestCase
   end
 
   def setup
-    @klass = HasBitmaskAttributes::BitmaskAttributes.make(
+    @klass = Bitmasker::BitmaskAttributes.make(
       MockModel, 'email_mask',
       send_weekly_email: 0b0001,
       send_monthly_newsletter: 0b0010,
@@ -29,7 +29,7 @@ class HasBitmaskAttributes::BitmaskAttributesTest < MiniTest::Unit::TestCase
   end
 
   def test_klass_to_s
-    assert_equal "HasBitmaskAttributes::BitmaskAttributes(HasBitmaskAttributes::BitmaskAttributesTest::MockModel#email_mask)", @klass.to_s
+    assert_equal "Bitmasker::BitmaskAttributes(Bitmasker::BitmaskAttributesTest::MockModel#email_mask)", @klass.to_s
   end
 
   def test_set_attribute

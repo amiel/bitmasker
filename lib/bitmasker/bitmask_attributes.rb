@@ -1,4 +1,4 @@
-module HasBitmaskAttributes
+module Bitmasker
   class BitmaskAttributes
     include ActiveModel::AttributeMethods
     attribute_method_suffix '?'

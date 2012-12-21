@@ -1,6 +1,6 @@
 source :rubygems
 
-# Specify your gem's dependencies in has_bitmask_attributes.gemspec
+# Specify your gem's dependencies in bitmasker.gemspec
 gemspec
 
 gem 'mocha', require: false
