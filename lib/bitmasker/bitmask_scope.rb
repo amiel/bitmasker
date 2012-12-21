@@ -2,6 +2,7 @@ module Bitmasker
   class BitmaskScope
     include ActiveModel::AttributeMethods
     attribute_method_prefix 'with_'
+    attribute_method_prefix 'with_any_'
     attribute_method_prefix 'without_'
 
     class_attribute :model_class
@@ -37,6 +38,13 @@ module Bitmasker
 
       # TODO: Test lots of databases
       model_class.where("#{field_name} & :mask = :mask", mask: mask.to_i)
+    end
+
+    def with_any_attribute(_, attributes)
+      mask = bitmask
+      mask.set_array(Array.wrap(attributes).map(&:to_s))
+
+      model_class.where("#{field_name} & :mask <> 0", mask: mask.to_i)
     end
 
     def without_attribute(_, attributes)

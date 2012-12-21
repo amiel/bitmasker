@@ -42,4 +42,9 @@ class Bitmasker::BitmaskScopeTest < MiniTest::Unit::TestCase
     MockModel.expects(:where).with("email_mask & :mask = 0 OR email_mask IS NULL", mask: 2)
     subject.without_emails(:send_monthly_newsletter)
   end
+
+  def test_with_any_attribute
+    MockModel.expects(:where).with("email_mask & :mask <> 0", mask: 3)
+    subject.with_any_emails([:send_weekly_email, :send_monthly_newsletter])
+  end
 end
