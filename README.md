@@ -16,6 +16,8 @@ Synopsis
   end
 ```
 
+[![Code Climate](https://codeclimate.com/github/amiel/bitmasker.png)](https://codeclimate.com/github/amiel/bitmasker)
+
 Examples
 --------
 
