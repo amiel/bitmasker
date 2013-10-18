@@ -17,6 +17,8 @@ Synopsis
 ```
 
 [![Code Climate](https://codeclimate.com/github/amiel/bitmasker.png)](https://codeclimate.com/github/amiel/bitmasker)
+[![Build Status](https://travis-ci.org/amiel/bitmasker.png)](https://travis-ci.org/amiel/bitmasker)
+
 
 Examples
 --------
