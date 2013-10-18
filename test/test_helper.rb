@@ -1,5 +1,5 @@
 require 'minitest/autorun'
-require 'turn/autorun'
+# require 'turn/autorun'
 
 require 'mocha/setup'
 
