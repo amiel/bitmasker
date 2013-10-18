@@ -41,7 +41,7 @@ class MockModel
 end
 
 
-class BitmaskAttributesTest < MiniTest::Unit::TestCase
+class BitmaskAttributesTest < MiniTest::Test
 
   def test_does_stuff_attribute
     mock = MockModel.new
