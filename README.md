@@ -38,7 +38,8 @@ Examples
   end
 ```
 
-this will define the following methods:
+This will define the following methods:
+
 * `User#notifications` -- returns a BitmaskAttributes object representing all values
 * `User#send_weekly_newsletter?` -- predicate
 * `User#send_weekly_newsletter` -- works just like the predicate, makes it easy to use actionview form helpers
@@ -47,8 +48,28 @@ this will define the following methods:
 * `User#send_monthly_newsletter`
 * `User#send_monthly_newsletter=(value)`
 
-the call to `config.accessible` calls `attr_accessible :send_weekly_newsletter, :send_monthly_newsletter` in your model
+the call to `config.accessible` calls `attr_accessible :send_weekly_newsletter, :send_monthly_newsletter` in your model.
 
+### Scopes
+
+Bitmasker also sets up a few useful scopes:
+
+* `User#with_notifications`
+* `User#without_notifications`
+* `User#with_any_notifications`
+
+#### Scopes Examples
+
+```ruby
+# Users that want weekly newsletter
+User.with_notifications(:send_weekly_newsletter)
+
+# Users that want monthly AND weekly newsletters
+User.with_notifications(:send_monthly_newsletter, :send_weekly_newsletter)
+
+# Users that want monthly OR weekly newsletters
+User.with_any_notifications(:send_monthly_newsletter, :send_weekly_newsletter)
+```
 
 
 View Example
