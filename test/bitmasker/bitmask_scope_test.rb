@@ -2,8 +2,7 @@ require 'test_helper'
 
 class Bitmasker::BitmaskScopeTest < MiniTest::Test
 
-  MockModel = Class.new do
-  end
+  MockModel = Class.new
 
   def model_instance
     @model_instance ||= MockModel.new

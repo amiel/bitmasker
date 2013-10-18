@@ -33,26 +33,28 @@ module Bitmasker
 
     # REVIEW: This (the unused _ attribute) tells me I have the design wrong
     def with_attribute(_, *attributes)
-      mask = bitmask
-      mask.set_array(Array.wrap(attributes).flatten.map(&:to_s))
-
       # TODO: Test lots of databases
-      model_class.where("#{field_name} & :mask = :mask", mask: mask.to_i)
+      bitmask_query attributes, "#{field_name} & :mask = :mask"
     end
 
     def with_any_attribute(_, *attributes)
-      mask = bitmask
-      mask.set_array(Array.wrap(attributes).flatten.map(&:to_s))
-
-      model_class.where("#{field_name} & :mask <> 0", mask: mask.to_i)
+      # TODO: Test lots of databases
+      bitmask_query attributes, "#{field_name} & :mask <> 0"
     end
 
     def without_attribute(_, *attributes)
+      # TODO: Test lots of databases
+      bitmask_query attributes, "#{field_name} & :mask = 0 OR #{field_name} IS NULL"
+    end
+
+    private
+
+    def bitmask_query(attributes, query)
       mask = bitmask
       mask.set_array(Array.wrap(attributes).flatten.map(&:to_s))
 
       # TODO: Test lots of databases
-      model_class.where("#{field_name} & :mask = 0 OR #{field_name} IS NULL", mask: mask.to_i)
+      model_class.where(query, mask: mask.to_i)
     end
 
   end
