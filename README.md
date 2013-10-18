@@ -81,5 +81,37 @@ if you are using attr_accessible in your model and you want to mass-assign your 
 * `name`    name of the field name in the database where all this info is stored, should be an integer
 
 
+Updating from `has_bitmask_attributes`
+--------------------------------------
+
+If you used the `method_format` feature from `has_bitmask_attributes`, you will need to change
+your configuration as `method_format` has been removed.
+
+=== Before
+
+```ruby
+  # in app/models/user.rb
+  class User < ActiveRecord::Base
+    has_bitmask_attributes :notifications do |config|
+      config.attribute :weekly_newsletter,    0b0001
+      config.attribute :monthly_newsletter,   0b0010, true
+      config.method_format 'send_%s'
+    end
+  end
+```
+
+=== After
+
+```ruby
+  # in app/models/user.rb
+  class User < ActiveRecord::Base
+    has_bitmask_attributes :notifications do |config|
+      config.attribute :send_weekly_newsletter,    0b0001
+      config.attribute :send_monthly_newsletter,   0b0010, true
+    end
+  end
+```
+
+
 Copyright (c) 2012 Amiel Martin, released under the MIT license
 
