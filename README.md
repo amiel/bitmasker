@@ -87,7 +87,7 @@ Updating from `has_bitmask_attributes`
 If you used the `method_format` feature from `has_bitmask_attributes`, you will need to change
 your configuration as `method_format` has been removed.
 
-=== Before
+### Before
 
 ```ruby
   # in app/models/user.rb
@@ -100,7 +100,7 @@ your configuration as `method_format` has been removed.
   end
 ```
 
-=== After
+### After
 
 ```ruby
   # in app/models/user.rb
