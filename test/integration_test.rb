@@ -67,6 +67,7 @@ class BitmaskAttributesTest < MiniTest::Test
   def test_accessible
     mock = MockModel.new
     assert_equal [:an_accessible_attribute], mock.accessible_attrs
+    assert_equal [:test_ci_failure], mock.accessible_attrs
   end
 
 
