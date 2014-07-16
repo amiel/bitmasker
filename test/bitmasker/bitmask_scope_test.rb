@@ -1,6 +1,6 @@
 require 'test_helper'
 
-class Bitmasker::BitmaskScopeTest < MiniTest::Test
+class Bitmasker::BitmaskScopeTest < MiniTest::Unit::TestCase
 
   MockModel = Class.new
 
