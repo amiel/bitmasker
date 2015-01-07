@@ -8,8 +8,8 @@ module Bitmasker
     end
 
     def value_to_boolean(value)
-      if defined? ::ActiveRecord::ConnectionAdapters::Column
-        ::ActiveRecord::ConnectionAdapters::Column.value_to_boolean(value)
+      if defined? ::ActiveRecord::ConnectionAdapters::Column::TRUE_VALUES
+        ::ActiveRecord::ConnectionAdapters::Column::TRUE_VALUES.include? value
       else
         ['1', 1, 't', 'true', true].include? value
       end
