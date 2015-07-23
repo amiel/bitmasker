@@ -3,6 +3,10 @@ require 'test_helper'
 class Bitmasker::BitmaskAttributesTest < MiniTest::Unit::TestCase
 
   MockModel = Class.new do
+    def self.table_name
+      "mock_models"
+    end
+
     def self.value_to_boolean(value)
       !!value
     end

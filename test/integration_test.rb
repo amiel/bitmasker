@@ -6,6 +6,10 @@ class MockModel
   attr_accessor :another_dummy_mask
   extend Bitmasker::Model
 
+  def self.table_name
+    "mock_models"
+  end
+
   def []=(sym, value)
     send "#{ sym }=", value
   end
