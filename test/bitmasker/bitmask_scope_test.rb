@@ -2,7 +2,11 @@ require 'test_helper'
 
 class Bitmasker::BitmaskScopeTest < MiniTest::Unit::TestCase
 
-  MockModel = Class.new
+  MockModel = Class.new do
+    def self.table_name
+      "mock_models"
+    end
+  end
 
   def model_instance
     @model_instance ||= MockModel.new
@@ -27,27 +31,27 @@ class Bitmasker::BitmaskScopeTest < MiniTest::Unit::TestCase
 
 
   def test_with_attribute
-    MockModel.expects(:where).with("email_mask & :mask = :mask", mask: 1)
+    MockModel.expects(:where).with("mock_models.email_mask & :mask = :mask", mask: 1)
     subject.with_emails(:send_weekly_email)
   end
 
   def test_with_attributes_array
-    MockModel.expects(:where).with("email_mask & :mask = :mask", mask: 6)
+    MockModel.expects(:where).with("mock_models.email_mask & :mask = :mask", mask: 6)
     subject.with_emails([:send_monthly_newsletter, :send_daily_spam])
   end
 
   def test_with_attributes
-    MockModel.expects(:where).with("email_mask & :mask = :mask", mask: 6)
+    MockModel.expects(:where).with("mock_models.email_mask & :mask = :mask", mask: 6)
     subject.with_emails(:send_monthly_newsletter, :send_daily_spam)
   end
 
   def test_without_attribute
-    MockModel.expects(:where).with("email_mask & :mask = 0 OR email_mask IS NULL", mask: 2)
+    MockModel.expects(:where).with("mock_models.email_mask & :mask = 0 OR mock_models.email_mask IS NULL", mask: 2)
     subject.without_emails(:send_monthly_newsletter)
   end
 
   def test_with_any_attribute
-    MockModel.expects(:where).with("email_mask & :mask <> 0", mask: 3)
+    MockModel.expects(:where).with("mock_models.email_mask & :mask <> 0", mask: 3)
     subject.with_any_emails([:send_weekly_email, :send_monthly_newsletter])
   end
 end

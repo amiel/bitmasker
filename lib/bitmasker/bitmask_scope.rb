@@ -7,6 +7,7 @@ module Bitmasker
 
     class_attribute :model_class
     class_attribute :field_name
+    class_attribute :table_name
     class_attribute :mask_name
     class_attribute :bitmask_attributes
 
@@ -20,6 +21,7 @@ module Bitmasker
       end
 
       klass.model_class = model_class
+      klass.table_name = model_class.table_name
       klass.field_name = field_name
       klass.mask_name = mask_name
       klass.bitmask_attributes = bitmask_attributes.stringify_keys
@@ -34,17 +36,17 @@ module Bitmasker
     # REVIEW: This (the unused _ attribute) tells me I have the design wrong
     def with_attribute(_, *attributes)
       # TODO: Test lots of databases
-      bitmask_query attributes, "#{field_name} & :mask = :mask"
+      bitmask_query attributes, "#{table_name}.#{field_name} & :mask = :mask"
     end
 
     def with_any_attribute(_, *attributes)
       # TODO: Test lots of databases
-      bitmask_query attributes, "#{field_name} & :mask <> 0"
+      bitmask_query attributes, "#{table_name}.#{field_name} & :mask <> 0"
     end
 
     def without_attribute(_, *attributes)
       # TODO: Test lots of databases
-      bitmask_query attributes, "#{field_name} & :mask = 0 OR #{field_name} IS NULL"
+      bitmask_query attributes, "#{table_name}.#{field_name} & :mask = 0 OR #{table_name}.#{field_name} IS NULL"
     end
 
     private
