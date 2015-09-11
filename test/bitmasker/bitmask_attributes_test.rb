@@ -22,9 +22,11 @@ class Bitmasker::BitmaskAttributesTest < MiniTest::Unit::TestCase
 
   def setup
     @klass = Bitmasker::BitmaskAttributes.make(
-      MockModel, 'email_mask',
-      send_weekly_email: 0b0001,
-      send_monthly_newsletter: 0b0010,
+      MockModel, 'email_mask', {
+        send_weekly_email: 0b0001,
+        send_monthly_newsletter: 0b0010,
+        send_awesome_email: 0b0100,
+      }, { send_awesome_email: true },
     )
   end
 

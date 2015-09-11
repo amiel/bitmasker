@@ -55,9 +55,14 @@ module Bitmasker
       mask = bitmask
       mask.set_array(Array.wrap(attributes).flatten.map(&:to_s))
 
+      return null_query if mask.to_i.zero?
+
       # TODO: Test lots of databases
       model_class.where(query, mask: mask.to_i)
     end
 
+    def null_query
+      model_class.where('1 = 0')
+    end
   end
 end
