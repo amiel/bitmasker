@@ -29,8 +29,8 @@ module Bitmasker
       klass
     end
 
-    def bitmask
-      Bitmask.new(bitmask_attributes, 0)
+    def bitmask(mask = 0)
+      Bitmask.new(bitmask_attributes, mask)
     end
 
     # REVIEW: This (the unused _ attribute) tells me I have the design wrong
