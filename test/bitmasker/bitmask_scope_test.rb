@@ -55,6 +55,10 @@ class Bitmasker::BitmaskScopeTest < MiniTest::Unit::TestCase
     subject.with_any_emails([:send_weekly_email, :send_monthly_newsletter])
   end
 
+  def test_bitmask_with_mask_code
+    assert_equal ["send_monthly_newsletter", "send_daily_spam"], subject.bitmask(6).to_a
+  end
+
   def test_with_unmatching_attribute
     MockModel.expects(:where).with("1 = 0")
     subject.with_emails(:omg_not_an_attribute)
